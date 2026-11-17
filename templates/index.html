@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0">
+    <title>Ink to Word</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Ink to Word home">
+          <span class="brand-mark" aria-hidden="true">i</span>
+          <span>ink<span class="brand-light">to</span>word</span>
+        </a>
+        <span class="local-badge"><span></span> Private workspace</span>
+      </header>
+
+      <section class="intro">
+        <div class="eyebrow"><span class="eyebrow-line"></span> HANDWRITING, MADE EDITABLE</div>
+        <h1>Your notes,<br><em>in your words.</em></h1>
+        <p class="intro-copy">Turn a photo or scanned page into editable text, then save it as a Word document.</p>
+      </section>
+
+      <section class="workspace" aria-label="Handwriting transcription">
+        <div class="steps" aria-label="Three steps">
+          <div class="step active"><span>01</span> Upload</div>
+          <div class="step-rule"></div>
+          <div class="step"><span>02</span> Review</div>
+          <div class="step-rule"></div>
+          <div class="step"><span>03</span> Export</div>
+        </div>
+
+        <div class="panels">
+          <section class="panel source-panel" aria-labelledby="source-heading">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">YOUR SOURCE</span>
+                <h2 id="source-heading">Add a document</h2>
+              </div>
+              <span class="panel-icon" aria-hidden="true">↗</span>
+            </div>
+
+            <label class="dropzone" id="dropzone" for="file-input">
+              <input id="file-input" type="file" accept=".pdf,.bmp,.gif,.jpeg,.jpg,.png,.tif,.tiff,application/pdf,image/bmp,image/gif,image/jpeg,image/png,image/tiff">
+              <span class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4.5 15.5v3A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <strong id="file-prompt">Drop your scan here</strong>
+              <span class="drop-hint">or <span class="browse-link">browse files</span></span>
+              <span class="file-limits">PDF or image · up to 100 MB</span>
+            </label>
+
+            <div class="selected-file hidden" id="selected-file">
+              <span class="file-icon" aria-hidden="true">FILE</span>
+              <span class="file-name" id="file-name"></span>
+              <button class="remove-file" id="remove-file" type="button" aria-label="Remove selected file">×</button>
+            </div>
+
+            <div class="api-key-block" id="api-key-block">
+              <label for="api-key">OCR.space API key{% if has_server_key %} (optional){% endif %}</label>
+              <input id="api-key" type="password" autocomplete="off" placeholder="{% if has_server_key %}Leave blank to use your configured key{% else %}Enter your API key{% endif %}">
+              <p class="key-note" id="key-note">{% if has_server_key %}Your configured key is used when this is blank.{% else %}Get a free key at <a href="https://ocr.space/ocrapi/freekey" target="_blank" rel="noreferrer">ocr.space ↗</a>. It is not saved.{% endif %}</p>
+            </div>
+
+            <div class="privacy-note">
+              <span aria-hidden="true">ⓘ</span>
+              <p>Pages are prepared on this computer and sent to OCR.space one at a time. Avoid uploading documents you don’t want to share with that service.</p>
+            </div>
+
+            <button class="primary-button" id="transcribe-button" type="button" disabled>
+              <span id="button-label">Transcribe handwriting</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <p class="error-message hidden" id="error-message" role="alert"></p>
+          </section>
+
+          <section class="panel result-panel" aria-labelledby="result-heading">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">THE TRANSCRIPTION</span>
+                <h2 id="result-heading">Review your text</h2>
+              </div>
+              <span class="result-status" id="result-status">WAITING</span>
+            </div>
+
+            <label class="sr-only" for="transcription">Recognized text — edit before exporting</label>
+            <textarea id="transcription" placeholder="Your recognized text will appear here. You can edit it before exporting to Word." spellcheck="true"></textarea>
+
+            <div class="result-footer">
+              <span id="word-count">0 words</span>
+              <button class="download-button" id="download-button" type="button" disabled>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 16v3h14v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Download .docx
+              </button>
+            </div>
+          </section>
+        </div>
+        <p class="review-reminder"><span aria-hidden="true">✳</span> Handwriting can be tricky. Give the transcription a quick review before you export.</p>
+      </section>
+
+      <footer class="footer">
+        <span>INK TO WORD <span class="footer-dot">·</span> MADE FOR THE WORDS THAT MATTER</span>
+        <span>Runs on this computer</span>
+      </footer>
+    </main>
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </body>
+</html>
